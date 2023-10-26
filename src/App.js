@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import ShowPrices from './compontnts/show-prices';
+import axios from 'axios';
+import './styles/style.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+    state = {
+        prices: {}
+    }
+
+    componentDidMount() {
+        // const self = this;
+        setInterval(
+            async () => {
+                const response = await axios.get('https://arya.demoio.ir/my-f-apis/GoldCoin.php');
+                console.log(response.data.result);
+                this.setState({ prices: response.data.result });
+            },
+            2000
+        );
+    }
+
+
+    render() {
+        return (
+            <>
+
+                <ShowPrices prices={this.state.prices} />
+            </>
+        );
+    }
+
 }
 
 export default App;
+
